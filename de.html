@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DecorDiscord V1 — Boutique</title>
+  <style>
+    :root {
+      --bg: #000; --card: #111; --text: #fff; --muted: #ccc; --primary: #fff; --accent: #999; --overlay: rgba(0,0,0,0.7);
+    }
+    body { font-family: 'Inter', system-ui, sans-serif; background: linear-gradient(180deg,#000 0%,#111 100%); color: var(--text); margin: 0; }
+    .container { width: 90%; max-width: 1100px; margin: auto; }
+    .site-header { background: rgba(255,255,255,0.05); backdrop-filter: blur(6px); position: sticky; top: 0; z-index: 100; }
+    .site-header .container { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; }
+    .logo { font-weight: 700; color: var(--text); text-decoration: none; font-size: 1.2rem; }
+    .nav a { color: var(--muted); text-decoration: none; margin-left: 16px; }
+    .hero { text-align: center; padding: 56px 0; }
+    .hero h1 { font-size: 2rem; margin: 0 0 10px; text-shadow: 0 0 5px #fff, 0 0 10px #999; }
+    .btn { display: inline-block; background: var(--primary); color: var(--bg); border: none; padding: 10px 16px; border-radius: 10px; text-decoration: none; font-weight: 600; }
+    .btn:hover { background: var(--accent); color: var(--text); }
+    .shop .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+    .product { background: var(--card); border: 1px solid #1b1b1b; padding: 16px; border-radius: 12px; transition: transform .25s ease, box-shadow .25s ease; }
+    .product:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(255,255,255,.15); }
+    .product h3 { margin: 0 0 6px; }
+    .product p { margin: 0 0 12px; color: var(--muted); }
+    .product-footer { display: flex; align-items: center; justify-content: space-between; }
+    .price { font-weight: 700; }
+
+    
+    .modal-overlay { position: fixed; inset: 0; background: var(--overlay); opacity: 0; pointer-events: none; transition: opacity .2s; }
+    .modal { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%) scale(.96); width: 90%; max-width: 520px;
+             background: #0d0d0d; border: 1px solid #222; border-radius: 14px; padding: 18px; box-shadow: 0 12px 40px rgba(0,0,0,.6);
+             opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; }
+    .modal h3 { margin: 0 0 10px; }
+    .modal p { color: var(--muted); margin: 0 0 16px; }
+    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+    .modal a.btn-secondary { background: transparent; color: var(--text); border: 1px solid #333; }
+    
+    #captcha:target ~ .overlay-captcha,
+    #captcha:target ~ .modal-captcha { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
+    #done:target ~ .overlay-done,
+    #done:target ~ .modal-done { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
+    
+    .close { position: absolute; top: 10px; right: 12px; color: var(--muted); text-decoration: none; font-weight: 700; }
+    .close:hover { color: var(--text); }
+    
+    .anchor { position: fixed; width: 0; height: 0; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="#">DecorDiscord</a>
+      <nav class="nav">
+        <a href="#boutique">Boutique</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Décore ton serveur Discord</h1>
+      <p>Choisis tes décorations/packs officiels. Tout est affiché à 0 € pour la démo.</p>
+      <a class="btn" href="#boutique">Voir la boutique</a>
+    </div>
+  </section>
+
+  <section id="boutique" class="shop container">
+    <h2>Boutique</h2>
+    <div class="grid">
+      
+      <div class="product">
+        <h3>Oreille de Chat</h3>
+        <p>Décoration mignonne pour ton avatar.</p>
+        <div class="product-footer">
+          <span class="price">0 €</span>
+          <a class="btn" href="#captcha">Ajouter</a>
+        </div>
+      </div>
+
+      <div class="product">
+        <h3>Colère</h3>
+        <p>Exprime ton côté explosif.</p>
+        <div class="product-footer">
+          <span class="price">0 €</span>
+          <a class="btn" href="#captcha">Ajouter</a>
+        </div>
+      </div>
+
+      <div class="product">
+        <h3>Mirage</h3>
+        <p>Effet mystérieux et stylé.</p>
+        <div class="product-footer">
+          <span class="price">0 €</span>
+          <a class="btn" href="#captcha">Ajouter</a>
+        </div>
+      </div>
+
+      <div class="product">
+        <h3>Amour</h3>
+        <p>Montre ton côté romantique.</p>
+        <div class="product-footer">
+          <span class="price">0 €</span>
+          <a class="btn" href="#captcha">Ajouter</a>
+        </div>
+      </div>
+
+      <div class="product">
+        <h3>Ange</h3>
+        <p>Ailes et halo lumineux.</p>
+        <div class="product-footer">
+          <span class="price">0 €</span>
+          <a class="btn" href="#captcha">Ajouter</a>
+        </div>
+      </div>
+
+      <div class="product">
+        <h3>Dragon Ball Pack</h3>
+        <p>Décorations inspirées de Dragon Ball.</p>
+        <div class="product-footer">
+          <span class="price">0 €</span>
+          <a class="btn" href="#captcha">Ajouter</a>
+        </div>
+      </div>
+
+      <div class="product">
+        <h3>Skibidi Pack</h3>
+        <p>Pack fun inspiré du mème Skibidi.</p>
+        <div class="product-footer">
+          <span class="price">0 €</span>
+          <a class="btn" href="#captcha">Ajouter</a>
+        </div>
+      </div>
+
+      <div class="product">
+        <h3>Pack Invisible</h3>
+        <p>Décoration mystérieuse et discrète.</p>
+        <div class="product-footer">
+          <span class="price">0 €</span>
+          <a class="btn" href="#captcha">Ajouter</a>
+        </div>
+      </div>
+
+      <div class="product">
+        <h3>Star Wars Pack</h3>
+        <p>Décorations inspirées de l’univers Star Wars.</p>
+        <div class="product-footer">
+          <span class="price">0 €</span>
+          <a class="btn" href="#captcha">Ajouter</a>
+        </div>
+      </div>
+
+      <div class="product">
+        <h3>Pack GGEZ</h3>
+        <p>Style gamer et compétitif.</p>
+        <div class="product-footer">
+          <span class="price">0 €</span>
+          <a class="btn" href="#captcha">Ajouter</a>
+        </div>
+      </div>
+
+      <div class="product">
+        <h3>Le Ki</h3>
+        <p>Énergie spirituelle puissante.</p>
+        <div class="product-footer">
+          <span class="price">0 €</span>
+          <a class="btn" href="#captcha">Ajouter</a>
+        </div>
+      </div>
+
+      <div class="product">
+        <h3>Éclosion de Cœur</h3>
+        <p>Effet romantique et lumineux.</p>
+        <div class="product-footer">
+          <span class="price">0 €</span>
+          <a class="btn" href="#captcha">Ajouter</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <a id="captcha" class="anchor"></a>
+  <a id="done" class="anchor"></a>
+
+  
+  <div class="modal-overlay overlay-captcha"></div>
+  <div class="modal modal-captcha" aria-labelledby="modal-captcha-title" role="dialog">
+    <a class="close" href="#">×</a>
+    <h3 id="modal-captcha-title">Vérification requise</h3>
+    <p>Fais une vérification captcha pour confirmer que tu n’es pas un bot.</p>
+    <div class="modal-actions">
+      <a class="btn btn-secondary" href="#">Annuler</a>
+      
+      <a class="btn" href="#done">J’ai validé le captcha</a>
+    </div>
+  </div>
+
+  
+  <div class="modal-overlay overlay-done"></div>
+  <div class="modal modal-done" aria-labelledby="modal-done-title" role="dialog">
+    <a class="close" href="#">×</a>
+    <h3 id="modal-done-title">Merci ! Dernière étape</h3>
+    <p>Ajoute “halloichheibehilter” sur Discord. Les demandes peuvent prendre entre 15 et 20 minutes.</p>
+    <div class="modal-actions">
+      <a class="btn" href="#">Compris</a>
+    </div>
+  </div>
+</body>
+</html>
