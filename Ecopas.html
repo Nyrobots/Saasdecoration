@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECOPAS | L'Art du Cacao</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Manrope:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-deep: #050806;
+            --bg-panel: #0c140f;
+            --primary: #1e4d2b;
+            --gold: #D4AF37;
+            --gold-glow: #aa862e;
+            --text-white: #f0f0f0;
+            --text-grey: #88998c;
+            --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; cursor: none; }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-white);
+            font-family: 'Manrope', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 { font-family: 'Italiana', serif; font-weight: 400; }
+
+        .cursor-dot {
+            position: fixed; top: 0; left: 0; width: 6px; height: 6px;
+            background: var(--gold); border-radius: 50%; z-index: 9999;
+            pointer-events: none; transform: translate(-50%, -50%);
+        }
+        .cursor-circle {
+            position: fixed; top: 0; left: 0; width: 40px; height: 40px;
+            border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 50%; z-index: 9998;
+            pointer-events: none; transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background 0.3s;
+        }
+        body:hover .cursor-circle.hovered {
+            width: 60px; height: 60px; background: rgba(212, 175, 55, 0.05); border-color: var(--gold);
+        }
+
+        .particles {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 1; overflow: hidden;
+        }
+        .particle {
+            position: absolute; background: var(--gold); border-radius: 50%;
+            opacity: 0.3; animation: floatUp linear infinite;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        .hero {
+            height: 100vh; display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
+        }
+        .hero-bg {
+            position: absolute; top: -10%; left: -10%; width: 120%; height: 120%;
+            background: url('https://images.unsplash.com/photo-1628151015968-3a4429e9ef04?q=80&w=1920&auto=format&fit=crop') center/cover;
+            filter: brightness(0.35) contrast(1.1);
+            animation: moveBg 30s infinite alternate ease-in-out;
+            z-index: 0;
+        }
+        @keyframes moveBg { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(-20px, -20px) scale(1.1); } }
+        
+        .hero-content {
+            z-index: 10; text-align: center; mix-blend-mode: normal;
+        }
+        .hero-label {
+            display: inline-block; color: var(--gold); letter-spacing: 8px; text-transform: uppercase;
+            font-size: 0.8em; margin-bottom: 20px; border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 10px 20px; border-radius: 50px; backdrop-filter: blur(5px);
+        }
+        .hero h1 {
+            font-size: 7vw; line-height: 1; color: transparent;
+            -webkit-text-stroke: 1px rgba(255,255,255,0.8);
+            margin-bottom: 30px; position: relative;
+        }
+        .hero h1 span {
+            display: block; color: var(--text-white); -webkit-text-stroke: 0;
+            text-shadow: 0 0 50px rgba(212, 175, 55, 0.2);
+        }
+        
+        .btn-mag {
+            display: inline-block; padding: 25px 50px; border-radius: 100px;
+            background: transparent; border: 1px solid rgba(255,255,255,0.2);
+            color: var(--text-white); text-transform: uppercase; letter-spacing: 2px;
+            font-size: 0.8em; text-decoration: none; position: relative; overflow: hidden;
+            transition: 0.3s var(--ease-out); z-index: 10;
+        }
+        .btn-mag::before {
+            content: ''; position: absolute; top:0; left:0; width:100%; height:100%;
+            background: var(--gold); transform: scaleX(0); transform-origin: right;
+            transition: transform 0.5s var(--ease-out); z-index: -1;
+        }
+        .btn-mag:hover { color: #000; border-color: transparent; }
+        .btn-mag:hover::before { transform: scaleX(1); transform-origin: left; }
+
+        .marquee-container {
+            padding: 40px 0; background: var(--bg-deep); overflow: hidden; border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .marquee-content {
+            display: flex; white-space: nowrap; animation: scrollText 20s linear infinite;
+        }
+        .marquee-item {
+            font-family: 'Italiana', serif; font-size: 4em; color: rgba(255,255,255,0.05);
+            margin-right: 60px; text-transform: uppercase;
+        }
+        @keyframes scrollText { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+
+        .section { padding: 120px 0; position: relative; }
+        .container { max-width: 1300px; margin: 0 auto; padding: 0 30px; }
+        
+        .section-title h2 {
+            font-size: 4em; color: var(--text-white); margin-bottom: 20px;
+        }
+        .section-title p {
+            color: var(--gold); letter-spacing: 3px; text-transform: uppercase; font-size: 0.9em; margin-bottom: 60px;
+        }
+
+        .cards-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px;
+        }
+        
+        .tilt-card {
+            background: var(--bg-panel); border: 1px solid rgba(255,255,255,0.05);
+            padding: 50px 40px; border-radius: 20px; position: relative;
+            transform-style: preserve-3d; transform: perspective(1000px);
+            transition: transform 0.1s;
+        }
+        .tilt-card::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 20px; background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.1), transparent 60%);
+            opacity: 0; transition: opacity 0.5s; pointer-events: none;
+        }
+        .tilt-card:hover::after { opacity: 1; }
+        
+        .card-icon {
+            font-size: 3em; color: var(--gold); margin-bottom: 30px;
+            transform: translateZ(30px);
+        }
+        .card-title {
+            font-size: 1.8em; margin-bottom: 15px; color: var(--text-white);
+            transform: translateZ(20px);
+        }
+        .card-text {
+            color: var(--text-grey); line-height: 1.6;
+            transform: translateZ(20px);
+        }
+
+        .stats-wrapper {
+            display: flex; justify-content: space-between; flex-wrap: wrap; margin-top: 100px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 60px;
+        }
+        .stat-block { text-align: left; margin-bottom: 30px; }
+        .stat-val {
+            font-family: 'Italiana', serif; font-size: 5em; line-height: 1;
+            background: linear-gradient(to bottom, #fff, #666); -webkit-background-clip: text; color: transparent;
+        }
+        .stat-name {
+            color: var(--gold); letter-spacing: 2px; text-transform: uppercase; font-size: 0.8em; margin-top: 10px; display: block;
+        }
+
+        .nav-dock {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: rgba(10, 10, 10, 0.6); backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.1); padding: 15px 30px; border-radius: 50px;
+            display: flex; gap: 30px; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .nav-link {
+            color: var(--text-grey); text-decoration: none; text-transform: uppercase;
+            font-size: 0.75em; letter-spacing: 1px; font-weight: 600; transition: 0.3s;
+            position: relative; display: flex; align-items: center; gap: 8px;
+        }
+        .nav-link i { font-size: 1.2em; }
+        .nav-link:hover, .nav-link.active { color: var(--text-white); transform: translateY(-3px); }
+        .nav-link.active::after {
+            content: ''; position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%);
+            width: 4px; height: 4px; background: var(--gold); border-radius: 50%;
+        }
+
+        footer {
+            padding: 80px 0; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;
+        }
+        .footer-logo { font-family: 'Italiana', serif; font-size: 3em; color: var(--text-white); margin-bottom: 20px; display: block; }
+        .social-link {
+            display: block; color: var(--text-grey); text-decoration: none; margin: 10px 0; transition: 0.3s;
+        }
+        .social-link:hover { color: var(--gold); }
+        .social-link i { margin-right: 10px; color: var(--gold); }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 12vw; }
+            .nav-dock { width: 90%; justify-content: space-between; padding: 15px 20px; }
+            .nav-link span { display: none; }
+            .nav-link i { font-size: 1.5em; }
+            .cursor-dot, .cursor-circle { display: none; }
+            * { cursor: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="particles" id="particles"></div>
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-circle"></div>
+
+    <div class="nav-dock">
+        <a href="#home" class="nav-link active" data-hover><i class="fas fa-home"></i> <span>Accueil</span></a>
+        <a href="#about" class="nav-link" data-hover><i class="fas fa-leaf"></i> <span>Vision</span></a>
+        <a href="#stats" class="nav-link" data-hover><i class="fas fa-chart-pie"></i> <span>Impact</span></a>
+        <a href="#partners" class="nav-link" data-hover><i class="fas fa-handshake"></i> <span>Partenaires</span></a>
+        <a href="#contact" class="nav-link" data-hover><i class="fas fa-envelope"></i> <span>Contact</span></a>
+    </div>
+
+    <section id="home" class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="hero-label">Coopérative Premium</div>
+            <h1>ECOPAS<br><span>L'HÉRITAGE</span></h1>
+            <p style="color:#aaa; max-width:500px; margin: 0 auto 40px; font-weight:300;">
+                San-Pédro, Côte d'Ivoire. <br>L'alliance parfaite entre tradition et excellence.
+            </p>
+            <a href="#about" class="btn-mag" data-hover>Découvrir</a>
+        </div>
+    </section>
+
+    <div class="marquee-container">
+        <div class="marquee-content">
+            <span class="marquee-item">Qualité Premium</span>
+            <span class="marquee-item">Durabilité</span>
+            <span class="marquee-item">Traçabilité</span>
+            <span class="marquee-item">Rainforest Alliance</span>
+            <span class="marquee-item">Fairtrade</span>
+            <span class="marquee-item">Impact Social</span>
+            <span class="marquee-item">Qualité Premium</span>
+            <span class="marquee-item">Durabilité</span>
+            <span class="marquee-item">Traçabilité</span>
+        </div>
+    </div>
+
+    <section id="about" class="section">
+        <div class="container">
+            <div class="section-title">
+                <p>Notre Philosophie</p>
+                <h2>Au-delà du Cacao</h2>
+            </div>
+
+            <div class="cards-grid">
+                <div class="tilt-card" data-hover>
+                    <div class="card-icon"><i class="fas fa-seedling"></i></div>
+                    <h3 class="card-title">Agriculture Durable</h3>
+                    <p class="card-text">Nous ne plantons pas seulement du cacao, nous régénérons la forêt grâce à l'agroforesterie intensive.</p>
+                </div>
+                <div class="tilt-card" data-hover>
+                    <div class="card-icon"><i class="fas fa-users"></i></div>
+                    <h3 class="card-title">Communauté Forte</h3>
+                    <p class="card-text">3.000 producteurs unis. Les primes sont réinvesties dans des écoles et des infrastructures vitales.</p>
+                </div>
+                <div class="tilt-card" data-hover>
+                    <div class="card-icon"><i class="fas fa-gem"></i></div>
+                    <h3 class="card-title">Qualité Absolue</h3>
+                    <p class="card-text">Fermentation contrôlée et séchage optimal pour des fèves destinées aux meilleurs chocolatiers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="stats" class="section" style="background: #080c09;">
+        <div class="container">
+            <div class="section-title">
+                <p>Performance</p>
+                <h2>Les Information Sur Ecopas </h2>
+            </div>
+            
+            <div class="stats-wrapper">
+                <div class="stat-block">
+                    <div class="stat-val" data-target="1271">0</div>
+                    <span class="stat-name">Producteurs Membres</span>
+                </div>
+                <div class="stat-block">
+                    <div class="stat-val" data-target="4500">0</div>
+                    <span class="stat-name">Tonnes Annuelles</span>
+                </div>
+                <div class="stat-block">
+                    <div class="stat-val" data-target="4879">0</div>
+                    <span class="stat-name">Hectares Cultivés</span>
+                </div>
+                <div class="stat-block">
+                    <div class="stat-val" data-target="60">0</div>
+                    <span class="stat-name">Femmes Leaders</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="partners" class="section">
+        <div class="container" style="text-align: center;">
+            <div class="section-title">
+                <p>Confiance</p>
+                <h2>Nos Partenaires</h2>
+            </div>
+            <div style="display: flex; justify-content: center; gap: 50px; flex-wrap: wrap; opacity: 0.7;">
+                <h3 style="font-size: 2em; color: #555;">FAIRTRADE</h3>
+                <h3 style="font-size: 2em; color: #555;">RAINFOREST</h3>
+                <h3 style="font-size: 2em; color: #555;">SACO</h3>
+                <h3 style="font-size: 2em; color: #555;">UBA</h3>
+                <h3 style="font-size: 2em; color: #555;">COFINA</h3>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section" style="border-top: 1px solid rgba(255,255,255,0.05);">
+        <div class="container" style="text-align: center;">
+            <h2 style="font-size: 3em; margin-bottom: 30px;">Rejoignez l'Excellence</h2>
+            <p style="color: #888; margin-bottom: 20px;">Quartier Cite , San-Pédro, Côte d'Ivoire</p>
+            <p style="color: #D4AF37; margin-bottom: 40px; font-size: 1.5em; font-family: 'Italiana', serif;">(+225) 27 34 70 40 80</p>
+            <a href="https://wa.me/2252734704080" target="_blank" class="btn-mag" data-hover><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        </div>
+    </section>
+
+    <footer>
+        <span class="footer-logo">ECOPAS</span>
+        
+        <div style="margin: 40px 0; display: flex; flex-direction: column; gap: 10px; align-items: center;">
+            <a href="https://facebook.com/ecopas" target="_blank" class="social-link">
+                <i class="fab fa-facebook-f"></i> Suivez-nous sur facebook Cliquez ici
+            </a>
+            <a href="https://linkedin.com/company/ecopas" target="_blank" class="social-link">
+                <i class="fab fa-linkedin-in"></i> Suivez-nous sur Linkedin Cliquez ici
+            </a>
+        </div>
+
+        <p style="color: #444; font-size: 0.8em; text-transform: uppercase; letter-spacing: 2px;">© 2025 Ecopas.</p>
+    </footer>
+
+    <script>
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = 30;
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            const x = Math.random() * 100;
+            const delay = Math.random() * 20;
+            const duration = 15 + Math.random() * 20;
+            const size = 2 + Math.random() * 4;
+
+            particle.style.left = `${x}%`;
+            particle.style.animationDelay = `${delay}s`;
+            particle.style.animationDuration = `${duration}s`;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+
+            particlesContainer.appendChild(particle);
+        }
+
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorCircle = document.querySelector('.cursor-circle');
+        const hoverElements = document.querySelectorAll('[data-hover]');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            cursorCircle.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        hoverElements.forEach(el => {
+            el.addEventListener('mouseenter', () => cursorCircle.classList.add('hovered'));
+            el.addEventListener('mouseleave', () => cursorCircle.classList.remove('hovered'));
+        });
+
+        const cards = document.querySelectorAll('.tilt-card');
+
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = ((y - centerY) / centerY) * -10;
+                const rotateY = ((x - centerX) / centerX) * 10;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)`;
+            });
+        });
+
+        const counters = document.querySelectorAll('.stat-val');
+        let hasAnimated = false;
+
+        const animateCounters = () => {
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const speed = 200;
+                const updateCount = () => {
+                    const count = +counter.innerText;
+                    const inc = target / speed;
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + inc);
+                        setTimeout(updateCount, 10);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+                updateCount();
+            });
+        };
+
+    const statsSection = document.getElementById('stats');
+        window.addEventListener('scroll', () => {
+            const sectionPos = statsSection.getBoundingClientRect().top;
+            const screenPos = window.innerHeight / 1.3;
+            if(sectionPos < screenPos && !hasAnimated) {
+                animateCounters();
+                hasAnimated = true;
+            }
+        });
+    </script>
+</body>
+</html
